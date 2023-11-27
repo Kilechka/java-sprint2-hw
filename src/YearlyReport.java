@@ -4,7 +4,6 @@ import java.util.HashMap;
 public class YearlyReport {
     ArrayList<Year> yearly = new ArrayList<>();
 
-
     public void loadFile(String path) {
         FileReader fileReader = new FileReader();
         String content = fileReader.readFileContents(path);
@@ -24,17 +23,19 @@ public class YearlyReport {
             yearly.add(year);
         }
     }
-    public HashMap<Integer, Integer> expense() {
+    public void expense() {
         HashMap<Integer, Integer> exp = new HashMap<>();
         for (Year year : yearly) {
-            if (year.isExpense == true) {
+            if (year.isExpense) {
                 exp.put(year.month, exp.getOrDefault(year.month, 0) - year.amount);
             }
-            else {
+            if (!year.isExpense) {
                 exp.put(year.month, exp.getOrDefault(year.month, 0) + year.amount);
             }
         }
-        return exp;
+        for (Integer a : exp.keySet()) {
+            System.out.println(a + " месяц - " + exp.get(a));
+        }
     }
     public int averageExpense() {
         int average = 0;
@@ -55,7 +56,7 @@ public class YearlyReport {
         int average = 0;
         HashMap<Integer, Integer> exp = new HashMap<>();
         for (Year year : yearly) {
-            if ((year.isExpense != true)) {
+            if ((!year.isExpense)) {
                 exp.put(year.month, exp.getOrDefault(year.month, 0) + year.amount);
             }
 

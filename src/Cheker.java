@@ -2,17 +2,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cheker {
-    public YearlyReport yearlyReport;
+
+
+   public YearlyReport yearlyReport;
     public MonthlyReport monthlyReport;
     public Cheker(YearlyReport yearlyReport, MonthlyReport monthlyReport) {
         this.yearlyReport = yearlyReport;
         this.monthlyReport = monthlyReport;
     }
     public boolean chek() {
-     //  HashMap<String, HashMap<String, Integer>> inCome = new HashMap<>();
-        HashMap<String, Integer> monthlyinCome = new HashMap<>();
-        HashMap<String, Integer> monthlyExpense = new HashMap<>();
+        HashMap<Integer, Integer> monthlyinCome = new HashMap<>();
+        HashMap<Integer, Integer> monthlyExpense = new HashMap<>();
         boolean compare = true;
+
 
         for (Month month : monthlyReport.monthly) {
             int sumExpense;
@@ -27,56 +29,36 @@ public class Cheker {
             }
         }
 
-
-        for (Year year : yearlyReport.yearly) {
-
-            if (year.isExpense == false) {
-                if (year.month == 01) {
-                    if (year.amount != monthlyinCome.get("Январь")) {
-                        System.out.println("Сумма прибыли в январе не сходится с суммой прибыли января в годовом отчёте");
-                        compare = false;
-                    }
+        for (int i = 0; i < monthlyinCome.size(); i ++) {
+            for (Year year : yearlyReport.yearly) {
+                if (year.isExpense) {
+                    continue;
                 }
-                else if (year.month == 02) {
-                    if (year.amount != monthlyinCome.get("Февраль")) {
-                        System.out.println("Сумма прибыли в феврале не сходится с суммой прибыли февраля в годовом отчёте");
-                        compare = false;
-                    }
-
+                if (year.month != i + 1) {
+                    continue;
                 }
-                else if (year.month == 03) {
-                    if (year.amount != monthlyinCome.get("Март")) {
-                        System.out.println("Сумма прибыли в марте не сходится с суммой прибыли марта в годовом отчёте");
-                        compare = false;
-                    }
-
+                if (year.amount != monthlyinCome.get(i + 1)) {
+                    System.out.println("Сумма прибыли в " + (i + 1) + " месяце не сходится с суммой прибыли в годовом отчёте");
+                    compare = false;
                 }
             }
-            else if (year.isExpense == true) {
-                if (year.month == 01) {
-                    if (year.amount != monthlyExpense.get("Январь")) {
-                        System.out.println("Сумма расходов в январе не сходится с суммой расходов января в годовом отчёте");
-                        compare = false;
-                    }
-
+        }
+        for (int i = 0; i < monthlyExpense.size(); i ++) {
+            for (Year year : yearlyReport.yearly) {
+                if (!year.isExpense) {
+                    continue;
                 }
-                else if (year.month == 02) {
-                    if (year.amount != monthlyExpense.get("Февраль")) {
-                        System.out.println("Сумма расходов в феврале не сходится с суммой расходов февраля в годовом отчёте");
-                        compare = false;
-                    }
-
+                if (year.month != i + 1) {
+                    continue;
                 }
-                else if (year.month == 03) {
-                    if (year.amount != monthlyExpense.get("Март")) {
-                        System.out.println("Сумма расходов в марте не сходится с суммой расходов марта в годовом отчёте");
-                        compare = false;
-                    }
-
+                if (year.amount != monthlyExpense.get(i + 1)) {
+                    System.out.println("Сумма расходов в " + (i + 1) + " месяце не сходится с суммой прибыли в годовом отчёте");
+                    compare = false;
                 }
             }
-
         }
         return compare;
+        }
     }
-}
+
+
